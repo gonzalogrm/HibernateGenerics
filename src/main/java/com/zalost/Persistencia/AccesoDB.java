@@ -12,7 +12,8 @@ import java.lang.reflect.Method;
 
 import com.zalost.Modelo.*;
 
-public class AccesoDB {
+public class AccesoDB {	
+	
 	public static <T extends IHasIntID> T SelectGenericByAutoID(Class<T> t, int ID) {
 		T result =  null;
 		

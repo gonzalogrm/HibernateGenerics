@@ -8,7 +8,12 @@ import java.util.*;
 
 public class Main {
 
-	public static void main(String[] args) {		
-		Test2.executeTest();
+	public static void main(String[] args) {	
+		//Introducir los datos de acceso a DB
+		ConexionDB.DBName = "examen_agruposistemas";
+		ConexionDB.user = "root";
+		ConexionDB.pass = "root";
+		
+		Test1.executeTest();
 	}
 }
