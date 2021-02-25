@@ -96,11 +96,8 @@ public class AccesoDB {
 	
 	public static <T extends IHasIntID> void updateGenericByID(
 			Class<T> t, int ID, String propertyName, Object value){
-		SessionFactory factory =
-				new Configuration().configure("hibernate.cfg.xml").
-					addAnnotatedClass(t).buildSessionFactory();
-	    	
-    	Session session = factory.openSession();
+
+		Session session = getSessionFactory().openSession();
 		
     	T result =  null;
     	

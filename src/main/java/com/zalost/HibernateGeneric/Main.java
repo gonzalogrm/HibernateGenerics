@@ -11,7 +11,7 @@ public class Main {
 	public static void main(String[] args) {	
 		AccesoDB.buildSessionFactory();
 		
-		Test1.executeTest();
+		Test2.executeTest();
 		
 		AccesoDB.closeFactory();
 	}
