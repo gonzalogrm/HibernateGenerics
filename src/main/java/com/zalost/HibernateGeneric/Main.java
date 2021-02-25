@@ -13,6 +13,6 @@ public class Main {
 		
 		Test1.executeTest();
 		
-		AccesoDB.shutdown();
+		AccesoDB.closeFactory();
 	}
 }

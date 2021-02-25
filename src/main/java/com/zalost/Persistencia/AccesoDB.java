@@ -27,7 +27,8 @@ public class AccesoDB {
 	      {
 	         if (sessionFactory == null) 
 	         {
-	            StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
+	            StandardServiceRegistry standardRegistry = 
+	            		new StandardServiceRegistryBuilder()
 	                  .configure("hibernate.cfg.xml").build();
 	             
 	            Metadata metaData = new MetadataSources(standardRegistry)
@@ -46,7 +47,7 @@ public class AccesoDB {
 	      return sessionFactory;
 	   }
 	 
-	   public static void shutdown() {
+	   public static void closeFactory() {
 	      getSessionFactory().close();
 	   }
 	   
