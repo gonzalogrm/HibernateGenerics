@@ -12,7 +12,6 @@ public class Test3 {
 		+ "NombreDep='NombreActualizado' "
 		+ "where IdDep=2");
 		
-		//Se podría usar una query distinta para hacer deletes
-		
+		//Se podría usar una query distinta para hacer delete
 	}
 }
