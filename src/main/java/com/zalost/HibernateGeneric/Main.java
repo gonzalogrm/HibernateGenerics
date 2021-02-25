@@ -1,4 +1,4 @@
-package com.zalost.HibernateSpring;
+package com.zalost.HibernateGeneric;
 
 import com.zalost.Modelo.*;
 import com.zalost.Persistencia.*;
@@ -14,6 +14,10 @@ public class Main {
 		ConexionDB.user = "root";
 		ConexionDB.pass = "root";
 		
+		AccesoDB.buildSessionFactory();
+		
 		Test1.executeTest();
+		
+		AccesoDB.shutdown();
 	}
 }

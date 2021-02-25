@@ -7,10 +7,10 @@ import java.util.*;
 public class Test1 {
 	public static void executeTest() {
 		System.out.println("----------Empleados----------");
-		Empleado e = AccesoDB.SelectGenericByAutoID(Empleado.class, 24);
+		Empleado e = AccesoDB.selectGenericByAutoID(Empleado.class, 24);
 		
 		List<Empleado> todosEmpleados =
-			AccesoDB.SelectGenericFrom(
+			AccesoDB.selectGenericFrom(
 				Empleado.class, 
 				"from Empleado e where e.IdEmpleado > 23");	
 	
@@ -25,10 +25,10 @@ public class Test1 {
 		}
 		
 		System.out.println("----------Departamento----------");
-		Departamento d = AccesoDB.SelectGenericByAutoID(Departamento.class, 1);
+		Departamento d = AccesoDB.selectGenericByAutoID(Departamento.class, 1);
 		
 		List<Departamento> todosDepartamentos =
-			AccesoDB.SelectGenericFrom(
+			AccesoDB.selectGenericFrom(
 				Departamento.class, 
 				"from Departamento d where d.IdDep > 1");	
 	
