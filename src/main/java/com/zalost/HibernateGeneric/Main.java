@@ -8,11 +8,14 @@ import java.util.*;
 
 public class Main {
 
-	public static void main(String[] args) {	
-		AccesoDB.buildSessionFactory();
+	public static void main(String[] args) {
+		DAOManager.getInstance().getAcceso().buildSessionFactory();
 		
+		Test1.executeTest();
 		Test2.executeTest();
+		Test3.executeTest();
 		
-		AccesoDB.closeFactory();
+		System.out.println("Cerramos Factory");
+		DAOManager.getInstance().getAcceso().closeFactory();
 	}
 }

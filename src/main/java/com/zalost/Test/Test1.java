@@ -6,11 +6,14 @@ import java.util.*;
 
 public class Test1 {
 	public static void executeTest() {
+		System.out.println("\n\n----------TEST 1----------");
 		System.out.println("----------Empleados----------");
-		Empleado e = AccesoDB.selectGenericByAutoID(Empleado.class, 24);
+		AccesoDB acceso = DAOManager.getInstance().getAcceso();
+		
+		Empleado e = acceso.selectGenericByAutoID(Empleado.class, 24);
 		
 		List<Empleado> todosEmpleados =
-			AccesoDB.selectGenericFrom(
+				acceso.selectGenericFrom(
 				Empleado.class, 
 				"from Empleado e where e.IdEmpleado > 23");	
 	
@@ -25,10 +28,10 @@ public class Test1 {
 		}
 		
 		System.out.println("----------Departamento----------");
-		Departamento d = AccesoDB.selectGenericByAutoID(Departamento.class, 1);
+		Departamento d = acceso.selectGenericByAutoID(Departamento.class, 1);
 		
 		List<Departamento> todosDepartamentos =
-			AccesoDB.selectGenericFrom(
+				acceso.selectGenericFrom(
 				Departamento.class, 
 				"from Departamento d where d.IdDep > 1");	
 	

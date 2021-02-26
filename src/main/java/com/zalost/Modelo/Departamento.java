@@ -44,7 +44,15 @@ public class Departamento implements IHasIntID {
 		NombreDep = nombreDep;
 	}
 
-	public int GetID() {
+	@Override
+	public int getId() {
 		return getIdDep();
-	}	
+	}
+
+	@Override
+	public void setId(int id) {
+		setIdDep(id);		
+	}
+
+	
 }

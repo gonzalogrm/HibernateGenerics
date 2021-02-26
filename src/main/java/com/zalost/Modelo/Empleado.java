@@ -20,7 +20,6 @@ public class Empleado implements IHasIntID{
 				+ NombreEmpleado + ", Sueldo=" + Sueldo + "]";
 	}
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Autoincrementado
 	@Column(name="IdEmpleado") 
@@ -37,13 +36,8 @@ public class Empleado implements IHasIntID{
 
 	
 	//Getters Setters
-	public int getIdEmpleado() {
-		return IdEmpleado;
-	}
 
-	public void setIdEmpleado(int idEmpleado) {
-		IdEmpleado = idEmpleado;
-	}
+	
 
 	public int getIdDepartamento() {
 		return IdDepartamento;
@@ -69,7 +63,19 @@ public class Empleado implements IHasIntID{
 		Sueldo = sueldo;
 	}
 
-	public int GetID() {
+	public int getIdEmpleado() {
+		return IdEmpleado;
+	}
+
+	public void setIdEmpleado(int idEmpleado) {
+		IdEmpleado = idEmpleado;
+	}
+
+	public int getId() {
 		return getIdEmpleado();
+	}
+
+	public void setId(int id) {
+		setIdEmpleado(id);
 	}
 }

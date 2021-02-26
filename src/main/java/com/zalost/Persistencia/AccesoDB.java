@@ -1,14 +1,12 @@
 package com.zalost.Persistencia;
 
 import java.util.*;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.proxy.HibernateProxyHelper;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -17,104 +15,150 @@ import java.lang.reflect.Method;
 
 import com.zalost.Modelo.*;
 
-public class AccesoDB {	
+public class AccesoDB implements DAOInterface,DAOHibernateInterface {	
 	
-	 private static SessionFactory sessionFactory = buildSessionFactory();
+	private SessionFactory sessionFactory;
 	 
-	   public static SessionFactory buildSessionFactory() 
-	   {
-	      try
-	      {
-	         if (sessionFactory == null) 
-	         {
-	            StandardServiceRegistry standardRegistry = 
-	            		new StandardServiceRegistryBuilder()
-	                  .configure("hibernate.cfg.xml").build();
-	             
-	            Metadata metaData = new MetadataSources(standardRegistry)
-	                  .getMetadataBuilder()
-	                  .build();
-	             
-	            sessionFactory = metaData.getSessionFactoryBuilder().build();
-	         }
-	         return sessionFactory;
-	      } catch (Throwable ex) {
-	         throw new ExceptionInInitializerError(ex);
-	      }
-	   }
+	public SessionFactory buildSessionFactory() 
+	{
+		try
+		{
+			if (sessionFactory == null) 
+			{
+				sessionFactory = 
+        			new Configuration().configure().buildSessionFactory();
+			}
+			return sessionFactory;
+		} catch (Throwable ex) {
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
 	 
-	   public static SessionFactory getSessionFactory() {
-	      return sessionFactory;
-	   }
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+   	}
 	 
-	   public static void closeFactory() {
-	      getSessionFactory().close();
-	   }
-	   
-	   public static <T extends IHasIntID> T selectGenericByAutoID(Class<T> t, int ID) {
+	public void closeFactory() {
+		getSessionFactory().close();	
+	}	   
+
+	public <T extends IHasIntID> T selectGenericByAutoID(Class<T> t, int ID) {
 		T result =  null;
 
-    	Session session = getSessionFactory().openSession();   	
+    	Session session = getSessionFactory().openSession();
     	//Comenzamos Transacción
-    	session.beginTransaction();   
-    	//Read
-    	result =t.cast(session.get(t, ID));
-    	//Commit
-    	session.getTransaction().commit();
-    	
+    	Transaction transaction =session.beginTransaction();		    	
+    	try {
+        	result =t.cast(session.get(t, ID));
+        	//Commit
+        	transaction.commit();
+    	}
+    	catch (HibernateException hibernateEx) {
+            try {
+            	transaction.rollback();
+            } catch(RuntimeException runtimeEx){
+                System.err.printf("Error en RollBack Transaction", runtimeEx);
+            }
+            hibernateEx.printStackTrace();
+        }
+    	finally {
+    		session.close();
+    	}    	
+
     	return result;
 	}
 	
 	//Example criteria: "from Empleado e where e.IdEmpleado > 20"
-	public static <T> List<T> selectGenericFrom(Class<T> t, String criteria) {
+	public <T> List<T> selectGenericFrom(Class<T> t, String criteria) {
 		List<T> result = new ArrayList<T>();
     	
-    	Session session = getSessionFactory().openSession();
-    	
-    	//Comenzamos Transacción
-    	session.beginTransaction();   
-    	//Read
-    	result = (ArrayList<T>)session.createQuery(criteria).getResultList();
-    	//Commit
-    	session.getTransaction().commit();
+		Session session = getSessionFactory().openSession();
+		//Comenzamos Transacción
+    	Transaction transaction =session.beginTransaction();	
+		try {			    	
+	    	//Read
+	    	result = (ArrayList<T>)session.createQuery(criteria).getResultList();
+	    	//Commit
+	    	transaction.commit();
+		}
+		catch (HibernateException hibernateEx) {
+            try {
+            	transaction.rollback();
+            } catch(RuntimeException runtimeEx){
+            	System.err.printf("Error en RollBack Transaction", runtimeEx);
+            }
+            hibernateEx.printStackTrace();
+        }
+    	finally {
+    		session.close();
+    	}    
     	
     	return result;	
 	}
 	
-	public static <T> void executeHQLQuery(Class<T> t, String criteria) {
+	
+public <T extends IHasIntID> void updateGenericByID(
+		Class<T> t, int ID, String propertyName, Object value){
+
+		Session session = getSessionFactory().openSession();		
+    	T result =  null;
+    	//Comenzamos Transacción
+    	Transaction transaction =session.beginTransaction();    	
+    	try {
+        	//Obtenemos el objeto desde DB
+        	result = t.cast(session.get(t, ID));        	
+        	//Cambiamos el valor de la variable usando Reflection
+        	invokeSetter(result, propertyName, value);        	
+        	//Commit
+        	transaction.commit();
+    	}
+    	catch (HibernateException hibernateEx) {
+            try {
+            	transaction.rollback();
+            } catch(RuntimeException runtimeEx){
+            	System.err.printf("Error en RollBack Transaction", runtimeEx);
+            }
+            hibernateEx.printStackTrace();
+        }
+    	finally {
+    		session.close();
+    	}   	
+	}	
+
+
+	
+	
+	
+	public <T> void executeHQLQuery(String criteria) {
 	    	
     	Session session = getSessionFactory().openSession();
-    	
     	//Comenzamos Transacción
-    	session.beginTransaction();   
-    	//Read
-    	session.createQuery(criteria).executeUpdate();
-    	//Commit
-    	session.getTransaction().commit();
-
+    	Transaction transaction =session.beginTransaction();
+    	try {
+        	//Read
+        	session.createQuery(criteria).executeUpdate();
+        	//Commit
+        	transaction.commit();
+    	}
+    	catch (HibernateException hibernateEx) {
+            try {
+            	transaction.rollback();
+            } catch(RuntimeException runtimeEx){
+            	System.err.printf("Error en RollBack Transaction", runtimeEx);
+            }
+            hibernateEx.printStackTrace();
+        }
+    	finally {
+    		session.close();
+    	}
 	}
 	
-	public static <T extends IHasIntID> void updateGenericByID(
-			Class<T> t, int ID, String propertyName, Object value){
-
-		Session session = getSessionFactory().openSession();
-		
-    	T result =  null;
-    	
-    	//Comenzamos Transacción
-    	session.beginTransaction();   
-    	//Obtenemos el objeto desde DB
-    	result = t.cast(session.get(t, ID));        	
-    	//Cambiamos el valor de la variable usando Reflection
-    	invokeSetter(result, propertyName, value);        	
-    	//Commit
-    	session.getTransaction().commit();
-	}	
+	//Métodos de reflection
+	//Información y ejemplos en https://java2blog.com/invoke-getters-setters-using-reflection-java/
 	
 	//Más información y explicación: 
 	//https://java2blog.com/invoke-getters-setters-using-reflection-java/
-	
-	public static void invokeSetter(Object obj, String propertyName, Object variableValue)
+	private void invokeSetter(Object obj, String propertyName, Object variableValue)
     {
         PropertyDescriptor descriptor;
         try {
@@ -133,7 +177,7 @@ public class AccesoDB {
  
     }
 	
-	public void invokeGetter(Object obj, String variableName)
+	private void invokeGetter(Object obj, String variableName)
     {
         try {
             PropertyDescriptor descriptor = 
