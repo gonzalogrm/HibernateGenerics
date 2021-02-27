@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 
 import com.zalost.Modelo.*;
 
-public class AccesoDB implements DAOInterface,DAOHibernateInterface {	
+public class AccesoDB implements DAO {	
 	
 	private SessionFactory sessionFactory;
 	 
@@ -97,7 +97,7 @@ public class AccesoDB implements DAOInterface,DAOHibernateInterface {
 	}
 	
 	
-public <T extends IHasIntID> void updateGenericByID(
+	public <T extends IHasIntID> void updateGenericByID(
 		Class<T> t, int ID, String propertyName, Object value){
 
 		Session session = getSessionFactory().openSession();		
@@ -126,17 +126,14 @@ public <T extends IHasIntID> void updateGenericByID(
 	}	
 
 
-	
-	
-	
-	public <T> void executeHQLQuery(String criteria) {
+	public <T> void executeHQLQuery(String query) {
 	    	
     	Session session = getSessionFactory().openSession();
     	//Comenzamos Transacción
     	Transaction transaction =session.beginTransaction();
     	try {
         	//Read
-        	session.createQuery(criteria).executeUpdate();
+        	session.createQuery(query).executeUpdate();
         	//Commit
         	transaction.commit();
     	}

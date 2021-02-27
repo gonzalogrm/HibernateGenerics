@@ -2,6 +2,7 @@ package com.zalost.Test;
 
 import com.zalost.Modelo.*;
 import com.zalost.Persistencia.AccesoDB;
+import com.zalost.Persistencia.DAO;
 import com.zalost.Persistencia.DAOManager;
 
 public class Test3 {
@@ -9,7 +10,7 @@ public class Test3 {
 	public static void executeTest() {
 		System.out.println("\n\n----------TEST 3----------");
 		
-		AccesoDB acceso = DAOManager.getInstance().getAcceso();
+		DAO acceso = DAOManager.getInstance().getAcceso();
 		
 		//Importante, usar los nombres definidos en Java
 		acceso.executeHQLQuery(

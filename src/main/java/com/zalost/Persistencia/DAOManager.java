@@ -1,7 +1,7 @@
 package com.zalost.Persistencia;
 
 public class DAOManager {
-	private AccesoDB acceso;
+	private DAO acceso;
 	private static DAOManager instance;
 
 	private DAOManager() {
@@ -13,11 +13,11 @@ public class DAOManager {
 		return instance;
 	}
 	
-	public AccesoDB getAcceso() {		
+	public DAO getAcceso() {		
 		return acceso;
 	}
 
-	public void setAcceso(AccesoDB acceso) {
+	public void setAcceso(DAO acceso) {
 		this.acceso = acceso;
 	}
 }

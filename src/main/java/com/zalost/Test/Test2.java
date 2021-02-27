@@ -2,6 +2,7 @@ package com.zalost.Test;
 
 import com.zalost.Modelo.*;
 import com.zalost.Persistencia.AccesoDB;
+import com.zalost.Persistencia.DAO;
 import com.zalost.Persistencia.DAOManager;
 
 public class Test2 {
@@ -9,7 +10,7 @@ public class Test2 {
 	public static void executeTest() {
 		System.out.println("\n\n----------TEST 2----------");
 		
-		AccesoDB acceso = DAOManager.getInstance().getAcceso();	
+		DAO acceso = DAOManager.getInstance().getAcceso();	
 		
 		Empleado e = acceso.selectGenericByAutoID(Empleado.class, 24);
 		System.out.println("Empleado por ID, Antes del cambio");

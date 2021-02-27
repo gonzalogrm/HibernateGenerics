@@ -8,7 +8,7 @@ public class Test1 {
 	public static void executeTest() {
 		System.out.println("\n\n----------TEST 1----------");
 		System.out.println("----------Empleados----------");
-		AccesoDB acceso = DAOManager.getInstance().getAcceso();
+		DAO acceso = DAOManager.getInstance().getAcceso();
 		
 		Empleado e = acceso.selectGenericByAutoID(Empleado.class, 24);
 		
