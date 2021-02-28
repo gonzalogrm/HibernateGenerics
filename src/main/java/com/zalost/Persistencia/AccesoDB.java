@@ -126,7 +126,7 @@ public class AccesoDB implements DAO {
 	}	
 
 
-	public <T> void executeHQLQuery(String query) {
+	public void executeHQLQuery(String query) {
 	    	
     	Session session = getSessionFactory().openSession();
     	//Comenzamos Transacción
