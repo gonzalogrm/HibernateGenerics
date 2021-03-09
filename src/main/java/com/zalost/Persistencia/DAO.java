@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import com.zalost.Modelo.IHasIntID;
 
 public interface DAO {
+	public void InsertAutoID(Object o);
 	public <T extends IHasIntID> T selectGenericByAutoID(Class<T> t, int ID);	
 	public <T> List<T> selectGenericFrom(Class<T> t, String criteria);
 	public <T extends IHasIntID> void updateGenericByID(

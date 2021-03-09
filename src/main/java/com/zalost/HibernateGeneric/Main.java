@@ -14,6 +14,7 @@ public class Main {
 		Test1.executeTest();
 		Test2.executeTest();
 		Test3.executeTest();
+		Test4.executeTest();
 		
 		System.out.println("Cerramos Factory");
 		DAOManager.getInstance().getAcceso().closeFactory();

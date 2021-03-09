@@ -42,6 +42,29 @@ public class AccesoDB implements DAO {
 		getSessionFactory().close();	
 	}	   
 
+	public void InsertAutoID(Object o) {
+		Session session = getSessionFactory().openSession();
+    	//Comenzamos Transacción
+    	Transaction transaction =session.beginTransaction();		    	
+    	try {
+        	//Save
+    		session.save(o);
+        	//Commit
+        	transaction.commit();
+    	}
+    	catch (HibernateException hibernateEx) {
+            try {
+            	transaction.rollback();
+            } catch(RuntimeException runtimeEx){
+                System.err.printf("Error en RollBack Transaction", runtimeEx);
+            }
+            hibernateEx.printStackTrace();
+        }
+    	finally {
+    		session.close();
+    	}    	
+	}
+	
 	public <T extends IHasIntID> T selectGenericByAutoID(Class<T> t, int ID) {
 		T result =  null;
 

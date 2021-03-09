@@ -36,9 +36,6 @@ public class Empleado implements IHasIntID{
 
 	
 	//Getters Setters
-
-	
-
 	public int getIdDepartamento() {
 		return IdDepartamento;
 	}
@@ -63,19 +60,11 @@ public class Empleado implements IHasIntID{
 		Sueldo = sueldo;
 	}
 
-	public int getIdEmpleado() {
+	public int getId() {
 		return IdEmpleado;
 	}
 
-	public void setIdEmpleado(int idEmpleado) {
-		IdEmpleado = idEmpleado;
-	}
-
-	public int getId() {
-		return getIdEmpleado();
-	}
-
 	public void setId(int id) {
-		setIdEmpleado(id);
+		IdEmpleado = id;
 	}
 }

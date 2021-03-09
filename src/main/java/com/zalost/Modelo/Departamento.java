@@ -8,6 +8,10 @@ public class Departamento implements IHasIntID {
 	
 	public Departamento(){}
 	
+	public Departamento(String nombreDep) {
+		NombreDep = nombreDep;
+	}
+	
 	public Departamento(int idDep, String nombreDep) {
 		IdDep = idDep;
 		NombreDep = nombreDep;
@@ -18,7 +22,8 @@ public class Departamento implements IHasIntID {
 		return "Departamento [IdDep=" + IdDep + ", NombreDep=" + NombreDep + ", getClass()=" + getClass()
 				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
-
+	
+	
 	@Id
 	@Column(name="IdDepartamento") 
 	private int IdDep;
@@ -28,14 +33,6 @@ public class Departamento implements IHasIntID {
 
 	
 	//Getters Setters
-	public int getIdDep() {
-		return IdDep;
-	}
-
-	public void setIdDep(int idDep) {
-		IdDep = idDep;
-	}
-
 	public String getNombreDep() {
 		return NombreDep;
 	}
@@ -46,13 +43,11 @@ public class Departamento implements IHasIntID {
 
 	@Override
 	public int getId() {
-		return getIdDep();
+		return IdDep;
 	}
 
 	@Override
 	public void setId(int id) {
-		setIdDep(id);		
-	}
-
-	
+		IdDep = id;		
+	}	
 }
